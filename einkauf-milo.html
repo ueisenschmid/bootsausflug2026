@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Einkaufsliste Milo – Bootsausflug 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #7a3e1e;
+      --accent-light: #c0622a;
+      --accent-bg: #f5d9c8;
+      --navy: #0d2137;
+      --sand: #f5ead8;
+      --cream: #fdfaf5;
+      --gold: #c9a84c;
+      --text: #1a2535;
+      --muted: #6b7f92;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--cream); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; }
+    header { background: #1e1008; position: relative; padding: 50px 40px 70px; overflow: hidden; }
+    header::before { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 55px; background: var(--cream); clip-path: ellipse(55% 100% at 50% 100%); }
+    .header-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+    .person-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-light); color: white; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 2px; margin-bottom: 20px; }
+    header h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 58px); color: white; line-height: 1.1; font-weight: 900; }
+    header h1 span { color: var(--gold); }
+    .header-sub { margin-top: 12px; color: var(--accent-bg); font-size: 14px; }
+    .progress-bar { margin-top: 20px; background: rgba(255,255,255,0.1); border-radius: 999px; height: 6px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.4s ease; }
+    .progress-label { margin-top: 8px; color: rgba(255,255,255,0.4); font-size: 12px; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+    .section-label { display: flex; align-items: center; gap: 16px; margin: 50px 0 24px; }
+    .section-label h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); }
+    .section-label .line { flex: 1; height: 1px; background: linear-gradient(to right, var(--accent-light), transparent); opacity: 0.25; }
+
+    .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .shop-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 14px rgba(13,33,55,0.07); animation: fadeUp 0.4s ease both; }
+    .shop-card-header { padding: 13px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--sand); }
+    .shop-emoji { font-size: 18px; }
+    .shop-category { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--navy); }
+    .shop-items { list-style: none; padding: 12px 18px; display: flex; flex-direction: column; }
+    .shop-item { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f5f5f5; font-size: 13.5px; color: var(--text); cursor: pointer; user-select: none; transition: color 0.15s; }
+    .shop-item:last-child { border-bottom: none; }
+    .shop-item.checked { color: #b0bec5; text-decoration: line-through; }
+    .check-box { width: 18px; height: 18px; border: 1.5px solid #cdd5db; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 11px; }
+    .shop-item.checked .check-box { background: var(--accent-light); border-color: var(--accent-light); color: white; }
+    .shop-qty { color: var(--muted); font-size: 12px; margin-left: auto; flex-shrink: 0; }
+
+    .fresh-note { background: #fff8f0; border-left: 3px solid var(--accent-light); border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: var(--text); }
+    .fresh-note strong { color: var(--accent-light); }
+
+    .reset-bar { display: flex; justify-content: flex-end; margin-top: 20px; }
+    .btn { background: none; border: 1.5px solid var(--muted); color: var(--muted); padding: 8px 18px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+    .btn:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+    footer { background: #1e1008; padding: 24px 40px; text-align: center; }
+    footer p { color: rgba(255,255,255,0.3); font-size: 12px; }
+    footer span { color: var(--gold); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 600px) { header { padding: 36px 20px 60px; } .shop-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="person-badge">🧊 Milo's Liste · Frische Waren</div>
+    <h1>Einkauf<br/><span>Bootsausflug 2026</span></h1>
+    <div class="header-sub">Frische & kühlpflichtige Artikel – kurz vor Abreise einkaufen</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel">0 von 0 Artikeln erledigt</div>
+  </div>
+</header>
+
+<main>
+  <div class="section-label"><h2>Einkaufsliste</h2><div class="line"></div></div>
+
+  <div class="fresh-note">
+    <strong>⏱ Timing:</strong> Möglichst am Tag vor oder am Morgen des Ablegens einkaufen. Salat, Erdbeeren und Avocados zuerst verbrauchen (Tag 1–2).
+  </div>
+
+  <div class="shop-grid" id="shopGrid"></div>
+  <div class="reset-bar">
+    <button class="btn" onclick="resetAll()">↺ Zurücksetzen</button>
+  </div>
+</main>
+
+<footer><p>⛵ Gute Fahrt &amp; <span>faire Winde</span></p></footer>
+
+<script>
+const categories = [
+  { emoji:'🍳', name:'Frühstück', items:[
+    { name:'Brot / Vollkorntoast', qty:'3 Packungen' },
+    { name:'Wurst / Aufschnitt', qty:'400 g' },
+    { name:'Eier', qty:'20 Stück' },
+    { name:'Speck / Bacon', qty:'250 g' },
+    { name:'Butter', qty:'250 g' },
+    { name:'Kuhmilch', qty:'1 l' },
+    { name:'Orangensaft', qty:'2 l' },
+    { name:'Pudding-Fertigbecher', qty:'6 Stück' },
+  ]},
+  { emoji:'🧀', name:'Käse', items:[
+    { name:'Frühstückskäse Scheiben (z.B. Emmentaler)', qty:'400 g' },
+    { name:'Schmelzkäse / Cheddar (für Burger)', qty:'2 Packungen' },
+    { name:'Gouda gerieben (für Pan-Wraps)', qty:'400 g' },
+    { name:'Parmesan (für Pasta)', qty:'100 g' },
+    { name:'Hartkäse am Stück, z.B. Bergkäse (Snack)', qty:'300 g' },
+  ]},
+  { emoji:'🌯', name:'Wraps – Frische Zutaten', items:[
+    { name:'Hummus', qty:'400 g' },
+    { name:'Falafel (fertig, gekühlt)', qty:'400 g' },
+    { name:'Tzatziki', qty:'1 Becher' },
+    { name:'Kochschinken', qty:'500 g' },
+    { name:'Avocados', qty:'4 Stück' },
+    { name:'Sahne', qty:'2 Becher' },
+  ]},
+  { emoji:'🍔', name:'Abendessen – Burger', items:[
+    { name:'Fleisch-Patties', qty:'6 Stück' },
+    { name:'Pflanzliche Patties', qty:'4 Stück' },
+  ]},
+  { emoji:'🍛', name:'Abendessen – Dal', items:[
+    { name:'Naan', qty:'2 Packungen' },
+    { name:'Wiener Würstchen (optional)', qty:'2 Packungen' },
+    { name:'Ingwer frisch', qty:'1 Stück' },
+  ]},
+  { emoji:'🥗', name:'Frisches Gemüse & Obst', items:[
+    { name:'Tomaten', qty:'500 g' },
+    { name:'Eisbergsalat', qty:'1 Kopf' },
+    { name:'Gurken', qty:'2 Stück' },
+    { name:'Paprika', qty:'4 Stück' },
+    { name:'Frühlingszwiebeln', qty:'1 Bund' },
+    { name:'Limetten', qty:'8 Stück' },
+    { name:'Zitrone', qty:'1 Stück' },
+    { name:'Trauben & Erdbeeren', qty:'500 g' },
+  ]},
+  { emoji:'🍮', name:'Dessert & Milchprodukte', items:[
+    { name:'Joghurt (Natur / Frucht)', qty:'8 Becher' },
+  ]},
+];
+
+const KEY = 'milo2026';
+const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+
+function countAll() { return categories.reduce((s, c) => s + c.items.length, 0); }
+function countChecked() { return Object.keys(saved).filter(k => saved[k]).length; }
+function updateProgress() {
+  const total = countAll(), done = countChecked();
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = done + ' von ' + total + ' Artikeln erledigt';
+}
+
+function render() {
+  const grid = document.getElementById('shopGrid');
+  grid.innerHTML = '';
+  categories.forEach((cat, ci) => {
+    const card = document.createElement('div');
+    card.className = 'shop-card';
+    card.style.animationDelay = (ci * 0.03) + 's';
+    const items = cat.items.map((item, ii) => {
+      const key = ci + '_' + ii;
+      const checked = saved[key] ? 'checked' : '';
+      return `<li class="shop-item ${checked}" onclick="toggle('${key}',this)">
+        <span class="check-box">${checked ? '✓' : ''}</span>
+        <span>${item.name}</span>
+        <span class="shop-qty">${item.qty}</span>
+      </li>`;
+    }).join('');
+    card.innerHTML = `
+      <div class="shop-card-header">
+        <span class="shop-emoji">${cat.emoji}</span>
+        <span class="shop-category">${cat.name}</span>
+      </div>
+      <ul class="shop-items">${items}</ul>`;
+    grid.appendChild(card);
+  });
+  updateProgress();
+}
+
+function toggle(key, el) {
+  el.classList.toggle('checked');
+  const box = el.querySelector('.check-box');
+  if (el.classList.contains('checked')) { saved[key] = true; box.textContent = '✓'; }
+  else { delete saved[key]; box.textContent = ''; }
+  localStorage.setItem(KEY, JSON.stringify(saved));
+  updateProgress();
+}
+
+function resetAll() {
+  if (!confirm('Alle Häkchen zurücksetzen?')) return;
+  Object.keys(saved).forEach(k => delete saved[k]);
+  localStorage.setItem(KEY, JSON.stringify(saved));
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
